@@ -2,6 +2,8 @@ from backend.model.model_loader import ModelLoader
 from backend.model.inference import InferenceEngine
 from backend.causality.attention_extractor import AttentionExtractor
 from backend.causality.token_intervention import TokenIntervention
+from backend.causality.layer_intervention import LayerIntervention
+from backend.detector.feature_extractor import FeatureExtractor
 
 def main():
     print("Loading model...")
@@ -44,6 +46,20 @@ def main():
 
     print("\n===== TOKEN CAUSAL SCORES =====")
     print(scores)
+
+    layer_intervention = LayerIntervention(model)
+
+    layer_scores = layer_intervention.run(result["input_ids"])
+
+    print("\n===== LAYER CAUSAL SCORES =====")
+    print(layer_scores)
+
+    feature_extractor = FeatureExtractor()
+
+    features = feature_extractor.extract(scores, layer_scores)
+
+    print("\n===== FEATURE VECTOR =====")
+    print(features)
 
 if __name__ == "__main__":
     main()
