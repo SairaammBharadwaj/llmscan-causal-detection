@@ -1,7 +1,7 @@
 from backend.model.model_loader import ModelLoader
 from backend.model.inference import InferenceEngine
 from backend.causality.attention_extractor import AttentionExtractor
-
+from backend.causality.token_intervention import TokenIntervention
 
 def main():
     print("Loading model...")
@@ -38,6 +38,12 @@ def main():
     print("Selected layers:", len(selected_attn))
     print("Selected attention shape (per layer):", selected_attn[0].shape)
 
+    token_intervention = TokenIntervention(engine, extractor)
+
+    scores = token_intervention.run(prompt, tokenizer)
+
+    print("\n===== TOKEN CAUSAL SCORES =====")
+    print(scores)
 
 if __name__ == "__main__":
     main()
