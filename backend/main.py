@@ -4,6 +4,7 @@ from backend.causality.attention_extractor import AttentionExtractor
 from backend.causality.token_intervention import TokenIntervention
 from backend.causality.layer_intervention import LayerIntervention
 from backend.detector.feature_extractor import FeatureExtractor
+from backend.detector.predictor import Detector
 
 def main():
     print("Loading model...")
@@ -60,6 +61,14 @@ def main():
 
     print("\n===== FEATURE VECTOR =====")
     print(features)
+
+    detector = Detector()
+
+    pred, prob = detector.predict(features)
+
+    print("\n===== DETECTION RESULT =====")
+    print("Prediction:", "Misbehavior" if pred == 1 else "Normal")
+    print("Confidence:", prob)
 
 if __name__ == "__main__":
     main()

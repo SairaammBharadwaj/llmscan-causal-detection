@@ -1,20 +1,17 @@
-from sklearn.neural_network import MLPClassifier
+import json
 import joblib
+from sklearn.neural_network import MLPClassifier
 
-# Sample training data (you will expand later)
-X = [
-    [2.4,0.5,3.0,1.5,1.5,50,45,73],
-    [1.2,0.3,1.5,0.9,0.6,10,8,12],
-    [3.0,0.7,4.0,2.0,2.0,70,60,80],
-    [1.5,0.4,2.0,1.0,1.0,15,12,18]
-]
+# Load dataset
+with open("backend/detector/dataset.json", "r") as f:
+    data = json.load(f)
 
-# Labels: 0 = normal, 1 = misbehavior
-y = [1,0,1,0]
+X = [item["features"] for item in data]
+y = [item["label"] for item in data]
 
-model = MLPClassifier(hidden_layer_sizes=(32,16), max_iter=500)
+model = MLPClassifier(hidden_layer_sizes=(32,16), max_iter=500, early_stopping=False)
 model.fit(X, y)
 
 joblib.dump(model, "backend/detector/mlp_model.joblib")
 
-print("Model trained and saved")
+print("Model trained on real dataset")
